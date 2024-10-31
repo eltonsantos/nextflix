@@ -1,19 +1,31 @@
+"use client"
+
+import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
+import { MovieType } from "@/types/movie";
+import axios from "axios";
 
-interface Movie {
-  id: number;
-  title: string;
-  posterPath: string;
-  isFavorite: boolean;
-}
+export default function MovieList() {
+  const [movies, setMovies] = useState<MovieType[]>([])
 
-interface MovieListProps {
-  movies: Movie[];
-}
+  useEffect(() => {
+    getMovies()
+  }, [])
 
-export default function MovieList({ movies }: MovieListProps) {
-  if (!movies || movies.length === 0) {
-    return <p className="text-center text-gray-500">Nenhum filme encontrado.</p>;
+  async function getMovies() {
+    try {
+      await axios({
+        url: "https://api.themoviedb.org/3/discover/movie",
+        params: {
+          api_key: process.env.NEXT_PUBLIC_TMDB_API_KEY,
+          language: 'pt-BR'
+        }
+      }).then(response => {
+        setMovies(response.data.results)
+      })
+    } catch (error) {
+      console.log("Erro ao buscar filmes", error)
+    }
   }
 
   return (
@@ -21,9 +33,7 @@ export default function MovieList({ movies }: MovieListProps) {
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}
-          id={movie.id}
-          title={movie.title}
-          posterPath={movie.posterPath}
+          movie={movie}
         />
       ))}
     </div>
