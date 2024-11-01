@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className="flex items-center space-x-4">
         <ThemeSwitch />
         <Link href="/favorites">Favoritos</Link>
-        <Link href="/auth/login">Entrar</Link>
+        <Link href="/api/auth/login">Entrar</Link>
       </div>
     </nav>
   );
