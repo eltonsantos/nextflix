@@ -34,7 +34,7 @@ export default function MovieCard(props: MovieCardProps) {
         )}
         
         <Link href={`/movie/${movie.id}`} passHref>
-          <button className="mt-4 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md w-full hover:bg-indigo-700 transition-colors duration-300">
+          <button className="mt-4 bg-blue-700 text-white font-semibold py-2 px-4 rounded-md w-full hover:bg-blue-900 transition-colors duration-300">
             Ver mais
           </button>
         </Link>
