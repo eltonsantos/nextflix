@@ -6,7 +6,7 @@ interface MoviePageProps {
   };
 }
 
-export default async function MoviePage({ params }: MoviePageProps) {
+export default function MoviePage({ params }: MoviePageProps) {
   const { id } = params;
 
   return (
