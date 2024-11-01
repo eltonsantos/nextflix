@@ -25,15 +25,14 @@ export default function MovieDetail({ id }: MovieDetailProps) {
   useEffect(() => {
     async function getMovie() {
       try {
-        await axios({
-            url: `https://api.themoviedb.org/3/movie/${id}`,
-            params: {
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}`, {
+          params: {
               api_key: process.env.NEXT_PUBLIC_API_KEY,
               language: "pt-BR",
             },
-          }).then(response => {
-            setMovie(response.data);
           })
+          
+          setMovie(response.data);
         } catch (error) {
         setError(error instanceof Error ? error.message : "Erro ao carregar o filme");
       } finally {
