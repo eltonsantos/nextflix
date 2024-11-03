@@ -1,6 +1,6 @@
 import { RegisterForm } from "@/components/RegisterForm";
 
-export default function Login() {
+export default function Register() {
   return (
     <div className="w-full flex mt-20 justify-center">
       <div className="w-full max-w-[500px] p-8 space-y-6 border border-slate-300 rounded-md bg-white">

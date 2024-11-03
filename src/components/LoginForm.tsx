@@ -1,43 +1,43 @@
 "use client";
 
-import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { FiMail, FiLock } from 'react-icons/fi';
 
 export const LoginForm = () => {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  async function login(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const result = await signIn('credentials', {
-      email: formData.email,
-      password: formData.password,
-      redirect: false
-    });
-
-    if (result?.ok) {
-      router.push('/');
-      router.refresh();
+    const data = {
+      email: formData.get("email"),
+      password: formData.get("password")
     }
-  };
+
+    const response = await signIn("credentials", {
+      ...data,
+      callbackUrl: '/',
+      // redirect: false,
+    })
+
+    if (response?.ok) {
+      localStorage.setItem("userToken", JSON.stringify(response))
+      window.location.href = "/"
+    } else {
+      console.error("Erro no login");
+    }
+  }
 
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5">
+      <form onSubmit={login} className="w-full flex flex-col gap-5">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FiMail className="h-5 w-5 text-blue-500" />
           </div>
           <input
+            name="email"
             type="email"
             placeholder="Digite seu email"
-            value={formData.email}
-            onChange={(e) => setFormData(prev => ({...prev, email: e.target.value}))}
             className="w-full pl-10 pr-4 py-3 rounded-lg border-2 border-gray-100 hover:border-blue-100 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-colors bg-gray-50 text-gray-700 placeholder-gray-400"
           />
         </div>
@@ -47,10 +47,9 @@ export const LoginForm = () => {
             <FiLock className="h-5 w-5 text-blue-500" />
           </div>
           <input
+            name="password"
             type="password"
             placeholder="Digite sua senha"
-            value={formData.password}
-            onChange={(e) => setFormData(prev => ({...prev, password: e.target.value}))}
             className="w-full pl-10 pr-4 py-3 rounded-lg border-2 border-gray-100 hover:border-blue-100 focus:border-blue-500 focus:ring-blue-500 focus:outline-none transition-colors bg-gray-50 text-gray-700 placeholder-gray-400"
           />
         </div>

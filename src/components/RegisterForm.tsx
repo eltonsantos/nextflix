@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { FiMail, FiLock, FiUser } from 'react-icons/fi';
 
 export const RegisterForm = () => {
   const router = useRouter();
+  const [, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,16 +15,23 @@ export const RegisterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await signIn('credentials', {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      redirect: false
-    });
+    try {
+      const users = JSON.parse(sessionStorage.getItem("users") || "[]");
 
-    if (result?.ok) {
-      router.push('/');
-      router.refresh();
+      // const userExists = users.some((user: any) => user.email === formData.email);
+      // if (userExists) {
+      //   setError("Usuário com este email já existe.");
+      //   return;
+      // }
+
+      const updatedUsers = [...users, formData];
+      sessionStorage.setItem("users", JSON.stringify(updatedUsers));
+
+      router.push("/login");
+
+    } catch (error) {
+      console.error("Erro ao registrar o usuário:", error);
+      setError("Erro ao registrar o usuário.");
     }
   };
 

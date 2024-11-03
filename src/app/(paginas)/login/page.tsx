@@ -28,7 +28,7 @@ export default function Login() {
 
         <p className="text-center text-sm text-gray-500 mt-8">
           Não tem uma conta?{' '}
-          <Link href="/api/auth/register" className="text-blue-500 hover:text-blue-600 font-medium">
+          <Link href="/api/register" className="text-blue-500 hover:text-blue-600 font-medium">
             Registre-se
           </Link>
         </p>
