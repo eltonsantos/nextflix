@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import ThemeSwitch from "./ThemeSwitch";
 import { getServerSession } from "next-auth";
 import { ButtonLogout } from "./ButtonLogout";
@@ -16,7 +17,17 @@ export default async function Navbar() {
         <div>
           {session ? (
             <>
-              <div>Olá, {session?.user?.name}</div>
+              { session.user?.image && (
+                <div>
+                  <Image
+                    src={session.user?.image}
+                    alt="Avatar"
+                    width={35}
+                    height={35}
+                  />
+                </div>
+              )}
+              <div>Olá, {session?.user?.email}</div>
               <ButtonLogout />
               <Link href="/favorites">Favoritos</Link>
             </>

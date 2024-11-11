@@ -13,21 +13,30 @@ export const RegisterForm = () => {
     password: ''
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.password) {
+      setError('Preencha todos os campos');
+      return;
+    }
+
     try {
-      const users = JSON.parse(sessionStorage.getItem("users") || "[]");
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // const userExists = users.some((user: any) => user.email === formData.email);
-      // if (userExists) {
-      //   setError("Usuário com este email já existe.");
-      //   return;
-      // }
+      const data = await response.json();
 
-      const updatedUsers = [...users, formData];
-      sessionStorage.setItem("users", JSON.stringify(updatedUsers));
-
-      router.push("/login");
+      if (response.ok) {
+        router.push("/login");
+      } else {
+        setError(data.error || "Erro ao registrar o usuário.");
+      }
 
     } catch (error) {
       console.error("Erro ao registrar o usuário:", error);

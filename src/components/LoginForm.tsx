@@ -4,7 +4,7 @@ import { signIn } from 'next-auth/react';
 import { FiMail, FiLock } from 'react-icons/fi';
 
 export const LoginForm = () => {
-  async function login(e: React.FormEvent<HTMLFormElement>) {
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
 
@@ -16,20 +16,18 @@ export const LoginForm = () => {
     const response = await signIn("credentials", {
       ...data,
       callbackUrl: '/',
-      // redirect: false,
     })
 
     if (response?.ok) {
-      localStorage.setItem("userToken", JSON.stringify(response))
       window.location.href = "/"
     } else {
-      console.error("Erro no login");
+      console.error("Email ou senha inválidos.");
     }
   }
 
   return (
     <div className="w-full">
-      <form onSubmit={login} className="w-full flex flex-col gap-5">
+      <form onSubmit={handleLogin} className="w-full flex flex-col gap-5">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FiMail className="h-5 w-5 text-blue-500" />
