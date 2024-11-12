@@ -11,7 +11,7 @@ export default function ThemeSwitch() {
   useEffect(() => setMounted(true), [])
 
   if (mounted) return (
-    <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="text-2xl">
+    <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="text-2xl hover:text-yellow-400">
       {theme === "dark" ? <SunIcon /> : <MoonIcon />}
     </button>
   )
