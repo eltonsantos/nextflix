@@ -8,8 +8,8 @@ type FavoriteProps = {
   }>
 }
 
-export async function GET(request: NextRequest, context: FavoriteProps) {
-  const params = await context.params;
+export async function GET(request: NextRequest, props: FavoriteProps) {
+  const params = await props.params;
   const movieId = parseInt(params.movieId);
 
   try {
