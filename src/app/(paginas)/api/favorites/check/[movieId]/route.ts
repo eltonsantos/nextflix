@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/prisma';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { movieId: string } }
-) {
+type FavoriteProps = {
+  params: Promise<{
+    movieId: string
+  }>
+}
 
-  const movieId = parseInt(params.movieId)
+export async function GET(request: NextRequest, context: FavoriteProps) {
+  const params = await context.params;
+  const movieId = parseInt(params.movieId);
 
   try {
     const session = await getServerSession();

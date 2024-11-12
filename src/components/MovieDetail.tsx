@@ -25,7 +25,11 @@ export default function MovieDetail({ id }: MovieDetailProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function getMovie() {
+    const getMovie = async () => {
+      if (!id) return;
+      
+      setLoading(true);
+
       try {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}`, {
           params: {
@@ -36,7 +40,8 @@ export default function MovieDetail({ id }: MovieDetailProps) {
           
           setMovie(response.data);
         } catch (error) {
-        setError(error instanceof Error ? error.message : "Erro ao carregar o filme");
+          console.error('Erro ao carregar filme:', error);
+          setError(error instanceof Error ? error.message : "Erro ao carregar o filme");
       } finally {
         setLoading(false);
       }
@@ -64,7 +69,7 @@ export default function MovieDetail({ id }: MovieDetailProps) {
   return (
     <SessionProvider>
       <div className="max-w-4xl mx-auto p-6 bg-gray-900 text-white rounded-lg shadow-lg mt-10">
-        <FavoriteButton movieId={parseInt(id as string)} />
+        <FavoriteButton movieId={Number(id)} />
         <div className="flex flex-col md:flex-row gap-6">
           <div className="w-full md:w-1/3">
             <Image
@@ -78,7 +83,7 @@ export default function MovieDetail({ id }: MovieDetailProps) {
 
           <div className="flex flex-col gap-4 md:w-2/3">
             <h1 className="text-4xl font-bold text-blue-400">{movie.title}</h1>
-            <p className="text-sm text-gray-400">Lançado em: {movie.release_date}</p>
+            <p className="text-sm text-gray-400">Lançado em: {new Date(movie.release_date).toLocaleDateString('pt-BR')}</p>
             <div className="flex items-center space-x-2">
               <span className="text-yellow-400 font-semibold text-lg">
                 {movie.vote_average.toFixed(1)}
