@@ -4,5 +4,5 @@
       "PRISMA_GENERATE": "true"
     }
   },
-  "installCommand": "npm install && npx prisma generate"
+  "installCommand": "npm install --legacy-peer-deps && npx prisma generate"
 }
