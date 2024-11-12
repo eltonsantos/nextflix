@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiMail, FiLock, FiUser } from 'react-icons/fi';
+import { toast } from "react-toastify";
 
 export const RegisterForm = () => {
   const router = useRouter();
@@ -33,8 +34,10 @@ export const RegisterForm = () => {
       const data = await response.json();
 
       if (response.ok) {
+        toast.success("Cadastrado com sucesso, faça login para entrar no sistema.");
         router.push("/login");
       } else {
+        toast.success("Erro ao registrar o usuário: ", data.error);
         setError(data.error || "Erro ao registrar o usuário.");
       }
 

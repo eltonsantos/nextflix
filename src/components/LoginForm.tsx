@@ -2,6 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import { FiMail, FiLock } from 'react-icons/fi';
+import { toast } from "react-toastify";
 
 export const LoginForm = () => {
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
@@ -15,12 +16,14 @@ export const LoginForm = () => {
 
     const response = await signIn("credentials", {
       ...data,
-      callbackUrl: '/',
+      redirect: false
     })
 
     if (response?.ok) {
       window.location.href = "/"
+      toast.success("Logado com sucesso");
     } else {
+      toast.error('Email ou senha inválidos.');
       console.error("Email ou senha inválidos.");
     }
   }
