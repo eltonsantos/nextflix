@@ -29,7 +29,7 @@ const handler = NextAuth({
           return null
         }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password!)
 
         if (!isPasswordValid) {
           return null
@@ -47,6 +47,26 @@ const handler = NextAuth({
   session: {
     strategy: 'jwt'
   },
+  callbacks: {
+    async signIn({ user, account }) {
+      if(account?.provider === 'github') {
+        let existingUser = await prisma.user.findUnique({
+          where: { email: user.email ?? ''},
+        });
+
+        if (!existingUser) {
+          existingUser = await prisma.user.create({
+            data: {
+              email: user.email!,
+              name: user.name,
+              loginMode: 'github',
+            },
+          });
+        }
+      }
+      return true
+    }
+  }
 });
 
 export { handler as GET, handler as POST };

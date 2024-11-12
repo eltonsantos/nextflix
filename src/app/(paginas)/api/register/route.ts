@@ -31,6 +31,7 @@ export async function POST(request: Request) {
         email,
         name,
         password: hashedPassword,
+        loginMode: 'credentials',
       },
     });
 
